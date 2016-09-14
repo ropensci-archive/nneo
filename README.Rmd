@@ -1,0 +1,59 @@
+nneo
+====
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+[![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
+
+`nneo` - R client for [NEON API](http://data.neonscience.org/data-api)
+
+Routes and R methods
+
+* `/products` - `nneo_products()`/`nneo_product()`
+* `/sites` - `nneo_sites()`/`nneo_site()`
+* `/locations` - `nneo_locations()`/`nneo_location()`
+
+## installation
+
+```{r eval=FALSE}
+devtools::install_github("ropenscilabs/nneo")
+```
+
+```{r}
+library("nneo")
+```
+
+## list products
+
+```{r}
+nneo_products()
+```
+
+## list sites
+
+```{r}
+nneo_sites()
+```
+
+## list a location
+
+```{r}
+res <- nneo_location("HARV")
+names(res)
+```
+
+## Meta
+
+* Please [report any issues or bugs](https://github.com/ropenscilabs/nneo/issues).
+* License: MIT
+* Get citation information for `nneo` in R doing `citation(package = nneo')`
+* Please note that this project is CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)
