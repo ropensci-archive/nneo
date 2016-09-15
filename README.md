@@ -1,10 +1,6 @@
 nneo
 ====
 
-
-
-[![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
-
 `nneo` - R client for [NEON API](http://data.neonscience.org/data-api)
 
 Routes and R methods
@@ -80,10 +76,10 @@ nneo_sites()
 ```r
 res <- nneo_location("HARV")
 names(res)
-#>  [1] "locationChildren"         "locationElevation"       
-#>  [3] "locationDescription"      "locationType"            
-#>  [5] "locationProperties"       "locationDecimalLatitude" 
-#>  [7] "locationName"             "domainCode"              
+#>  [1] "locationChildren"         "locationElevation"
+#>  [3] "locationDescription"      "locationType"
+#>  [5] "locationProperties"       "locationDecimalLatitude"
+#>  [7] "locationName"             "domainCode"
 #>  [9] "siteCode"                 "locationDecimalLongitude"
 #> [11] "locationParent"
 ```
