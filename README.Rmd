@@ -10,6 +10,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+[![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
+[![codecov.io](https://codecov.io/github/ropenscilabs/nneo/coverage.svg?branch=master)](https://codecov.io/github/ropenscilabs/nneo?branch=master)
+
 `nneo` - R client for [NEON API](http://data.neonscience.org/data-api)
 
 Routes and R methods

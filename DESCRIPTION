@@ -16,7 +16,10 @@ Imports:
     crul (>= 0.1.0),
     jsonlite (>= 1.1),
     tibble (>= 1.2),
-    data.table
+    data.table,
+    fauxpas
 Suggests:
-    roxygen2 (>= 5.0.1)
+    roxygen2 (>= 5.0.1),
+    testthat,
+    covr
 RoxygenNote: 5.0.1
