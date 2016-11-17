@@ -1,6 +1,8 @@
 nneo
 ====
 
+
+
 [![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
 [![codecov.io](https://codecov.io/github/ropenscilabs/nneo/coverage.svg?branch=master)](https://codecov.io/github/ropenscilabs/nneo?branch=master)
 
@@ -63,8 +65,8 @@ nneo_sites()
 #> 3                  Disney Wilderness Preserve     -81.43619 RELOCATABLE
 #> 4                                 Posey Creek     -78.14678        CORE
 #> 5           Ordway-Swisher Biological Station     -81.99343        CORE
-#> 6       Niwot Ridge Mountain Research Station    -105.58237        CORE
-#> 7                                       Healy    -149.21335 RELOCATABLE
+#> 6                                       Healy    -149.21335 RELOCATABLE
+#> 7       Niwot Ridge Mountain Research Station    -105.58237        CORE
 #> 8            Jones Ecological Research Center     -84.46862 RELOCATABLE
 #> 9  Smithsonian Conservation Biology Institute     -78.13949        CORE
 #> 10       Rocky Mountain National Park CASTNET    -105.54596 RELOCATABLE
@@ -79,12 +81,48 @@ nneo_sites()
 ```r
 res <- nneo_location("HARV")
 names(res)
-#>  [1] "locationChildren"         "locationElevation"
-#>  [3] "locationDescription"      "locationType"
-#>  [5] "locationProperties"       "locationDecimalLatitude"
-#>  [7] "locationName"             "domainCode"
+#>  [1] "locationChildren"         "locationElevation"       
+#>  [3] "locationDescription"      "locationType"            
+#>  [5] "locationProperties"       "locationDecimalLatitude" 
+#>  [7] "locationName"             "domainCode"              
 #>  [9] "siteCode"                 "locationDecimalLongitude"
 #> [11] "locationParent"
+```
+
+## data
+
+
+```r
+nneo_data(product_code = "DP1.00098.001", site_code = "HEAL", 
+          year_month = "2016-05")
+#> $status
+#> [1] 200
+#> 
+#> $data
+#> $data$files
+#> # A tibble: 4 × 4
+#>        crc32                                                       name
+#> *      <chr>                                                      <chr>
+#> 1 0xb2506dd5  NEON.D19.HEAL.DP1.00098.001.00000.003.000.001.RH_1min.csv
+#> 2 0xd6e86fd9  NEON.D19.HEAL.DP1.00098.001.00000.000.040.001.RH_1min.csv
+#> 3  0x560b9ba NEON.D19.HEAL.DP1.00098.001.00000.003.000.030.RH_30min.csv
+#> 4 0x78a83344 NEON.D19.HEAL.DP1.00098.001.00000.000.040.030.RH_30min.csv
+#> # ... with 2 more variables: url <chr>, size <chr>
+#> 
+#> $data$productCode
+#> [1] "DP1.00098.001"
+#> 
+#> $data$urls
+#> [1] "http://data.neonscience.org:80/api/v0/data/DP1.00098.001/HEAL/2016-05/NEON.D19.HEAL.DP1.00098.001.00000.003.000.001.RH_1min.csv?package=basic" 
+#> [2] "http://data.neonscience.org:80/api/v0/data/DP1.00098.001/HEAL/2016-05/NEON.D19.HEAL.DP1.00098.001.00000.000.040.001.RH_1min.csv?package=basic" 
+#> [3] "http://data.neonscience.org:80/api/v0/data/DP1.00098.001/HEAL/2016-05/NEON.D19.HEAL.DP1.00098.001.00000.003.000.030.RH_30min.csv?package=basic"
+#> [4] "http://data.neonscience.org:80/api/v0/data/DP1.00098.001/HEAL/2016-05/NEON.D19.HEAL.DP1.00098.001.00000.000.040.030.RH_30min.csv?package=basic"
+#> 
+#> $data$month
+#> [1] "2016-05"
+#> 
+#> $data$siteCode
+#> [1] "HEAL"
 ```
 
 ## Meta
