@@ -10,7 +10,8 @@ nneo_locations(...)
 nneo_location(x, ...)
 }
 \arguments{
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{named curl options passed on to \code{\link[crul]{HttpClient}},
+e.g., \code{list(verbose = TRUE)} or \code{list(timeout_ms = 1000)}}
 
 \item{x}{(character) a location code name}
 }

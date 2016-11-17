@@ -1,5 +1,8 @@
 nGET <- function(url, ...) {
-  res <- httr::GET(url, ...)
-  httr::stop_for_status(res)
-  c8(res)
+  cli <- crul::HttpClient$new(url = url, opts = list(...))
+  res <- cli$get()
+  res$parse()
+  #res <- httr::GET(url, ...)
+  #httr::stop_for_status(res)
+  #c8(res)
 }

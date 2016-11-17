@@ -10,7 +10,8 @@ nneo_products(...)
 nneo_product(x, ...)
 }
 \arguments{
-\item{...}{curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{named curl options passed on to \code{\link[crul]{HttpClient}},
+e.g., \code{list(verbose = TRUE)} or \code{list(timeout_ms = 1000)}}
 
 \item{x}{(character) a product code}
 }
@@ -33,6 +34,11 @@ res$productDescription
 ### get many products
 ids <- c("DP3.30018.001", "DP4.00001.001", "DP3.30025.001")
 lapply(ids, nneo_product)
+
+## curl options
+nneo_product("DP3.30018.001", verbose = TRUE)
+nneo_product("DP3.30018.001", verbose = TRUE, timeout_ms = 1000)
+nneo_product("DP3.30018.001", verbose = TRUE, useragent = "hello world")
 }
 }
 
