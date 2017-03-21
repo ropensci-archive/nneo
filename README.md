@@ -16,6 +16,7 @@ Routes and R methods
 * `/products` - `nneo_products()`/`nneo_product()`
 * `/sites` - `nneo_sites()`/`nneo_site()`
 * `/locations` - `nneo_locations()`/`nneo_location()`
+* `/data` - `nneo_data()`/`nneo_file()`
 
 ## installation
 
@@ -65,9 +66,9 @@ nneo_sites()
 #> *                                  <chr>         <dbl>       <chr>
 #> 1                           Jornada LTER    -106.84254 RELOCATABLE
 #> 2      Ordway-Swisher Biological Station     -81.99343        CORE
-#> 3                 LBJ National Grassland     -97.57000        CORE
-#> 4  Niwot Ridge Mountain Research Station    -105.58237        CORE
-#> 5                                  Healy    -149.21334 RELOCATABLE
+#> 3  Niwot Ridge Mountain Research Station    -105.58237        CORE
+#> 4                                  Healy    -149.21334 RELOCATABLE
+#> 5                 LBJ National Grassland     -97.57000        CORE
 #> 6           Rocky Mountain National Park    -105.54592 RELOCATABLE
 #> 7               Blandy Experimental Farm     -78.07164 RELOCATABLE
 #> 8                               Sterling    -103.02930 RELOCATABLE

@@ -23,6 +23,7 @@ Routes and R methods
 * `/products` - `nneo_products()`/`nneo_product()`
 * `/sites` - `nneo_sites()`/`nneo_site()`
 * `/locations` - `nneo_locations()`/`nneo_location()`
+* `/data` - `nneo_data()`/`nneo_file()`
 
 ## installation
 

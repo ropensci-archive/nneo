@@ -10,6 +10,8 @@
 #'  \item [nneo_site()]
 #'  \item [nneo_locations()]
 #'  \item [nneo_location()]
+#'  \item [nneo_data()]
+#'  \item [nneo_file()]
 #' }
 #'
 #' @section Curl options:
