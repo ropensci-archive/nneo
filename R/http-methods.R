@@ -1,5 +1,12 @@
 nGET <- function(url, query = list(), ...) {
-  cli <- crul::HttpClient$new(url = url, opts = list(...))
+  cli <- crul::HttpClient$new(
+    url = url,
+    opts = list(...),
+    headers = list(
+      `User-Agent` = nneo_ua(),
+      'X-USER-AGENT' = nneo_ua()
+    )
+  )
   res <- cli$get(query = query)
   errs(res)
   res$parse("UTF-8")
@@ -26,4 +33,13 @@ match_err <- function(code) {
   fxns <- lapply(tmp, function(x) eval(parse(text = x)))
   codes <- vapply(fxns, function(z) z$public_fields$status_code, 1)
   fxns[[which(code == codes)]]
+}
+
+nneo_ua <- function() {
+  versions <- c(
+    paste0("r-curl/", utils::packageVersion("curl")),
+    paste0("crul/", utils::packageVersion("crul")),
+    sprintf("rOpenSci(nneo/%s)", utils::packageVersion("nneo"))
+  )
+  paste0(versions, collapse = " ")
 }

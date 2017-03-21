@@ -4,9 +4,9 @@
 \name{nneo-package}
 \alias{nneo-package}
 \alias{nneo}
-\title{nneo - R client for the NEON API (\url{http://data.neonscience.org/data-api})}
+\title{nneo - R client for the NEON API}
 \description{
-nneo - R client for the NEON API (\url{http://data.neonscience.org/data-api})
+NEON API docs: \url{http://data.neonscience.org/data-api}
 }
 \section{nneo API}{
 
@@ -25,6 +25,14 @@ nneo - R client for the NEON API (\url{http://data.neonscience.org/data-api})
 Curl options follow those in the \pkg{curl} package. Find the curl
 options by looking at \code{\link[curl:curl_options]{curl::curl_options()}}. Pass them
 on into any \pkg{nneo} function call.
+}
+
+\section{User-Agent}{
+
+A user agent string is sent in every request just to let the NEON
+servers know that the request is coming from R and from this package.
+No personal info is shared, just the package name and version for
+\pkg{nneo} and the underlying HTTP packages (\pkg{crul}, \pkg{curl})
 }
 
 \author{
