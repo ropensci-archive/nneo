@@ -12,6 +12,7 @@ License: MIT + file LICENSE
 URL: https://github.com/ropenscilabs/nneo
 BugReports: https://github.com/ropenscilabs/nneo/issues
 LazyData: true
+Roxygen: list(markdown = TRUE)
 Imports:
     crul (>= 0.1.0),
     jsonlite (>= 1.1),
@@ -19,7 +20,7 @@ Imports:
     data.table,
     fauxpas
 Suggests:
-    roxygen2 (>= 5.0.1),
+    roxygen2 (>= 6.0.1),
     testthat,
     covr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

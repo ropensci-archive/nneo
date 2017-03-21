@@ -3,8 +3,8 @@
 #' @export
 #' @param x (character) a product code
 #' @template curl
-#' @return \code{nneo_products} returns a tibble (data.frame), and
-#' \code{nneo_product} returns a list
+#' @return `nneo_products` returns a tibble (data.frame), and
+#' `nneo_product` returns a list
 #' @examples \dontrun{
 #' ## list products
 #' nneo_products()

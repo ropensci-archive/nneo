@@ -2,34 +2,32 @@
 % Please edit documentation in R/nneo-package.R
 \docType{package}
 \name{nneo-package}
-\alias{nneo}
 \alias{nneo-package}
-\title{nneo - R client for the NEON API
-(\url{http://data.neonscience.org/data-api})}
+\alias{nneo}
+\title{nneo - R client for the NEON API (\url{http://data.neonscience.org/data-api})}
 \description{
-nneo - R client for the NEON API
-(\url{http://data.neonscience.org/data-api})
+nneo - R client for the NEON API (\url{http://data.neonscience.org/data-api})
 }
 \section{nneo API}{
 
 \itemize{
- \item \code{\link{nneo_products}}
- \item \code{\link{nneo_product}}
- \item \code{\link{nneo_sites}}
- \item \code{\link{nneo_site}}
- \item \code{\link{nneo_locations}}
- \item \code{\link{nneo_location}}
+\item \code{\link[=nneo_products]{nneo_products()}}
+\item \code{\link[=nneo_product]{nneo_product()}}
+\item \code{\link[=nneo_sites]{nneo_sites()}}
+\item \code{\link[=nneo_site]{nneo_site()}}
+\item \code{\link[=nneo_locations]{nneo_locations()}}
+\item \code{\link[=nneo_location]{nneo_location()}}
 }
 }
 
 \section{Curl options}{
 
 Curl options follow those in the \pkg{curl} package. Find the curl
-options by looking at \code{\link[curl]{curl_options}}. Pass them
+options by looking at \code{\link[curl:curl_options]{curl::curl_options()}}. Pass them
 on into any \pkg{nneo} function call.
 }
+
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com}
 }
 \keyword{package}
-

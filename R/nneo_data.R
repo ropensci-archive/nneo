@@ -8,13 +8,13 @@
 #' optional.
 #' @param filename (character) a file name. optional.
 #' @template curl
-#' @return \code{nneo_data} returns a list, while \code{nneo_file} returns
+#' @return `nneo_data` returns a list, while `nneo_file` returns
 #' a tibble/data.frame
 #'
-#' @details \code{nneo_data} gets files available for a given
+#' @details `nneo_data` gets files available for a given
 #' product/site/month combination.
 #'
-#' \code{nneo_file} gets a file, and returns a data.frame
+#' `nneo_file` gets a file, and returns a data.frame
 #'
 #' @examples \dontrun{
 #' nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",

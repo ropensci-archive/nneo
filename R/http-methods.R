@@ -2,7 +2,7 @@ nGET <- function(url, query = list(), ...) {
   cli <- crul::HttpClient$new(url = url, opts = list(...))
   res <- cli$get(query = query)
   errs(res)
-  res$parse()
+  res$parse("UTF-8")
 }
 
 errs <- function(x) {
