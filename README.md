@@ -3,8 +3,11 @@ nneo
 
 
 
+[![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 [![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
 [![codecov.io](https://codecov.io/github/ropenscilabs/nneo/coverage.svg?branch=master)](https://codecov.io/github/ropenscilabs/nneo?branch=master)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/nneo)](https://github.com/metacran/cranlogs.app)
+
 
 `nneo` - R client for [NEON API](http://data.neonscience.org/data-api)
 
@@ -31,20 +34,20 @@ library("nneo")
 
 ```r
 nneo_products()
-#> # A tibble: 183 × 13
-#>    productStatus
-#> *          <chr>
-#> 1         FUTURE
-#> 2         ACTIVE
-#> 3         FUTURE
-#> 4         FUTURE
-#> 5         ACTIVE
-#> 6         FUTURE
-#> 7         ACTIVE
-#> 8         FUTURE
-#> 9         FUTURE
-#> 10        FUTURE
-#> # ... with 173 more rows, and 12 more variables: productDescription <chr>,
+#> # A tibble: 181 × 14
+#>     keywords productStatus
+#> *     <list>         <chr>
+#> 1  <chr [7]>        FUTURE
+#> 2  <chr [8]>        ACTIVE
+#> 3  <chr [8]>        FUTURE
+#> 4  <chr [1]>        FUTURE
+#> 5     <NULL>        ACTIVE
+#> 6  <chr [2]>        FUTURE
+#> 7     <NULL>        ACTIVE
+#> 8     <NULL>        FUTURE
+#> 9  <chr [6]>        FUTURE
+#> 10 <chr [9]>        FUTURE
+#> # ... with 171 more rows, and 12 more variables: productDescription <chr>,
 #> #   productCode <chr>, productCategory <chr>, themes <list>,
 #> #   productScienceTeam <chr>, productName <chr>,
 #> #   productCodePresentation <chr>, specs <list>,
@@ -57,20 +60,20 @@ nneo_products()
 
 ```r
 nneo_sites()
-#> # A tibble: 47 × 11
-#>                               siteDescription siteLongitude    siteType
-#> *                                       <chr>         <dbl>       <chr>
-#> 1                                Jornada LTER    -106.84254 RELOCATABLE
-#> 2               Klemme Range Research Station     -99.05878 RELOCATABLE
-#> 3                  Disney Wilderness Preserve     -81.43619 RELOCATABLE
-#> 4                                 Posey Creek     -78.14678        CORE
-#> 5           Ordway-Swisher Biological Station     -81.99343        CORE
-#> 6                                       Healy    -149.21335 RELOCATABLE
-#> 7       Niwot Ridge Mountain Research Station    -105.58237        CORE
-#> 8            Jones Ecological Research Center     -84.46862 RELOCATABLE
-#> 9  Smithsonian Conservation Biology Institute     -78.13949        CORE
-#> 10       Rocky Mountain National Park CASTNET    -105.54596 RELOCATABLE
-#> # ... with 37 more rows, and 8 more variables: stateName <chr>,
+#> # A tibble: 53 × 11
+#>                          siteDescription siteLongitude    siteType
+#> *                                  <chr>         <dbl>       <chr>
+#> 1                           Jornada LTER    -106.84254 RELOCATABLE
+#> 2      Ordway-Swisher Biological Station     -81.99343        CORE
+#> 3                 LBJ National Grassland     -97.57000        CORE
+#> 4  Niwot Ridge Mountain Research Station    -105.58237        CORE
+#> 5                                  Healy    -149.21334 RELOCATABLE
+#> 6           Rocky Mountain National Park    -105.54592 RELOCATABLE
+#> 7               Blandy Experimental Farm     -78.07164 RELOCATABLE
+#> 8                               Sterling    -103.02930 RELOCATABLE
+#> 9                                 Toolik    -149.37047        CORE
+#> 10      Konza Prairie Biological Station     -96.56309        CORE
+#> # ... with 43 more rows, and 8 more variables: stateName <chr>,
 #> #   stateCode <chr>, siteLatitude <dbl>, domainName <chr>,
 #> #   domainCode <chr>, siteCode <chr>, dataProducts <list>, siteName <chr>
 ```
@@ -93,7 +96,7 @@ names(res)
 
 
 ```r
-nneo_data(product_code = "DP1.00098.001", site_code = "HEAL", 
+nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",
           year_month = "2016-05")
 #> $status
 #> [1] 200
