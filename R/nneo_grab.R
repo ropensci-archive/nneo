@@ -118,27 +118,63 @@ grabNEON<-function(
                                            year_month = y,
                                            package=pack_type))),recursive = FALSE)
 
-
-    # var_data<-lapply(product_code, function(x) nneo::nneo_data(product_code = x,
-    #                                                        site_code = Site,
-    #                                                        year_month = year_month[1],
-    #                                                        package=pack_type))
-
-
     #combine data filenames into one df:
     files_pack_type<-do.call("rbind",lapply(lapply(var_data, "[[", "data"),
                                             "[[", "files"))
-    #get filenames that match user requested time_agr:
-    files_time_agr<-files_pack_type$name[grep(paste0(time_agr,"min.csv"),
-                                        files_pack_type$name)]
+    #get filenames that match user requested time_agr and sort:
+    files_time_agr<-sort(files_pack_type$name[grep(paste0(time_agr,"min.csv"),
+                                        files_pack_type$name)])
     #get the data using nneo_file:
-    data_all<-unlist(lapply(year_month, function(y) lapply(unique(files_time_agr),
+    data_all<-lapply(year_month, function(y) lapply(unique(files_time_agr),
                                    function(x) nneo::nneo_file(product_code = substr(x,15,27),
                                                                site_code = Site,
                                                                year_month = y,
-                                                               filename = x))),recursive = FALSE)
+                                                               filename = x)))#,recursive = FALSE)
+    #name first level of list:
+    names(data_all)<-year_month
+    #rbind dataframes of similar data:
+    data_length<-unique(unlist(lapply(data_all, function(x) length(x))))
+    crap<-list()
+    for(i in 1:data_length){
+      crap[[i]]<-do.call("rbind",lapply(data_all, "[[", i))
+      names(crap[[i]])<-c(names(crap[[i]])[1:2],
+                          paste0(names(crap[[i]][3:length(crap[[i]])]),
+                                 substr(unique(files_time_agr),34,41)[i]))
+    }
+    #merge data:
+    data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime","endDateTime")), crap)
+
+#
+#     for(i in 1:length(data_all)){
+#       first_two<-names(data_all[[i]][1:2])
+#       names(data_all[[i]])<-paste0(names(data_all[[i]]),
+#                                    substr(names(data_all[i]),
+#                                           nchar(names(data_all[i]))-11,
+#                                           nchar(names(data_all[i]))-4))
+#       #reset first two colnames to merge dfs:
+#       names(data_all[[i]])<-c(first_two,names(data_all[[i]][3:length(names(data_all[[i]]))]))
+#     }
+
+
+    #test<-do.call("rbind",lapply(data_all, `[`, 1))
+
+
+    # lapply(data_all, "[[", 1:length((lapply(data_all, `[`))))
+    #
+    # lapply(data_all, function(x) length(x))
+    #
+    #
+    # lapply(lapply(data_all, "[[", function(x)  x), setNames, nm = new_col_name)
+    #
+    # sapply(x, function(mat) split(data_all, col(mat))[1])
+
+    data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime","endDateTime")), data_all)
+
+    #merge the data based on startDateTime and endDateTime:
+    #data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime","endDateTime")), data_all)
+
     #assign DP name to nested tibbles:
-    names(data_all)<-rep(unique(substr(files_time_agr,0,45)),2)
+    #names(data_all)<-rep(unique(substr(files_time_agr,0,45)),2)
 
 
     # data_all<-lapply(files_time_agr,
