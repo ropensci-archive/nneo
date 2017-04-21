@@ -57,13 +57,15 @@
 #     Amended code to submit to rOpenSci
 ##############################################################################################
 # dirKpiApiOut<-"C:/Users/rlee/DATA/commissioningTesting"
+time_start<-"2015-10-01"
+time_end<-"2015-11-15"
 # time_bgn<-as.POSIXct("2016-01-01 01:12:00", format="%Y-%m-%d %H:%M:%S", tz="UTC")
 # time_end<-as.POSIXct("2016-01-31 01:12:00", format="%Y-%m-%d %H:%M:%S", tz="UTC")
 #begin function: #dat_dir
 grabNEON<-function(
     Site="BART",   #change to lowercase,
-    time_bgn=time_bgn,  #preset this to NULL or a date (if date, make only month span)
-    time_end=time_end,#preset this to NULL or a date (if date, make only month span)
+    time_start="2015-10-01",  #preset this to NULL or a date (if date, make only month span)
+    time_end="2015-11-15",#preset this to NULL or a date (if date, make only month span)
     data_var= "active radiation",
       #"Photosynthetically active radiation (Quantum Line)",
     time_agr=30,
@@ -76,25 +78,25 @@ grabNEON<-function(
     #availableNEONDataProducts<<-as.data.frame(nneo::nneo_products())[which(as.data.frame(nneo::nneo_products())$productStatus=="ACTIVE"),c("productName","siteCodes")]
 
     #Rounding input time to nearest whole hour
-    time_bgn <- round(time_bgn, "hours")
-    time_end <- round(time_end, "hours")
+   # time_bgn <- round(time_bgn, "hours")
+    #time_end <- round(time_end, "hours")
 
     # if(is.null(WriteDir)==TRUE){
     #   stop("write directory must be specified")
     # }
-    options(warn=-1)
+    #options(warn=-1)
     #directory<-dat_dir
     #setwd(dat_dir)
     #Site<<-Site
     #load dependencies:
-    library(nneo)
+    #library(nneo)
     #library(lubridate)
     #---get site information----#
     #site_info<-lapply(Site, function(x) nneo::nneo_site(x))
 
     #valid_site<-grep(Site,nneo::nneo_sites()$siteCode)
 
-
+################# ------------ START ---------------- ####################
     #grab site metadata:
     site_info<-nneo::nneo_site(Site)
 
@@ -104,11 +106,17 @@ grabNEON<-function(
     #if empty:
     if(length(product_code)==0){stop(paste0("data product(s) not available for: ", Site))}
 
+    #create year_month variable for nneo_data and nneo_file:
+    year_month<-c(substr(time_start,0,7),substr(time_end,0,7))
+    #check if it's same month - won't need to gather multiple monthly files:
+    if(length(year_month)==1){year_month<-year_month[1]}
+
     #use nneo_data to get available file(s) via user input:
+
     var_data<-lapply(product_code,
-                     function(x) nneo_data(product_code = x,
+                     function(x,y) nneo::nneo_data(product_code = x,
                                            site_code = Site,
-                                           year_month = "2016-05",
+                                           year_month = year_month[1],
                                            package=pack_type))
 
     #combine data filenames into one df:
@@ -123,7 +131,23 @@ grabNEON<-function(
                                                  site_code = Site,
                                            year_month = "2016-05",
                                            filename = x))
-    names(data_all)<-files_time_agr
+    #assign DP name to nested tibbles:
+    names(data_all)<-substr(files_time_agr,0,45)
+    #assign spatial identifers to colnames of nested tibbles:
+    for(i in 1:length(data_all)){
+      first_two<-names(data_all[[i]][1:2])
+      names(data_all[[i]])<-paste0(names(data_all[[i]]),
+                                  substr(names(data_all[i]),
+                                         nchar(names(data_all[i]))-11,
+                                         nchar(names(data_all[i]))-4))
+      #reset first two colnames to merge dfs:
+      names(data_all[[i]])<-c(first_two,names(data_all[[i]][3:length(names(data_all[[i]]))]))
+    }
+    #merge the data based on startDateTime and endDateTime:
+    data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime","endDateTime")), data_all)
+
+
+    ################# ------------ END ---------------- ####################
 
 
     #read NEON webpage that houses .csv file of current sites:
@@ -137,7 +161,7 @@ grabNEON<-function(
     #     # Site<<-readline(prompt="Selection:")
     #     #
     # }
-    domain<-NEON_site$Domain.Number
+    #domain<-NEON_site$Domain.Number
     #--------SITE---------#
     #
     #Split out the YYYY-MM
