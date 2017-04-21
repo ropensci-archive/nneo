@@ -112,12 +112,18 @@ grabNEON<-function(
     if(length(year_month)==1){year_month<-year_month[1]}
 
     #use nneo_data to get available file(s) via user input:
-
-    var_data<-lapply(product_code,
-                     function(x,y) nneo::nneo_data(product_code = x,
+    var_data<-unlist(lapply(year_month, function(y) lapply(product_code,
+                     function(x) nneo::nneo_data(product_code = x,
                                            site_code = Site,
-                                           year_month = year_month[1],
-                                           package=pack_type))
+                                           year_month = y,
+                                           package=pack_type))),recursive = FALSE)
+
+
+    # var_data<-lapply(product_code, function(x) nneo::nneo_data(product_code = x,
+    #                                                        site_code = Site,
+    #                                                        year_month = year_month[1],
+    #                                                        package=pack_type))
+
 
     #combine data filenames into one df:
     files_pack_type<-do.call("rbind",lapply(lapply(var_data, "[[", "data"),
@@ -126,13 +132,25 @@ grabNEON<-function(
     files_time_agr<-files_pack_type$name[grep(paste0(time_agr,"min.csv"),
                                         files_pack_type$name)]
     #get the data using nneo_file:
-    data_all<-lapply(files_time_agr,
-                     function(x) nneo::nneo_file(product_code = substr(x,15,27),
-                                                 site_code = Site,
-                                           year_month = "2016-05",
-                                           filename = x))
+    data_all<-unlist(lapply(year_month, function(y) lapply(unique(files_time_agr),
+                                   function(x) nneo::nneo_file(product_code = substr(x,15,27),
+                                                               site_code = Site,
+                                                               year_month = y,
+                                                               filename = x))),recursive = FALSE)
     #assign DP name to nested tibbles:
-    names(data_all)<-substr(files_time_agr,0,45)
+    names(data_all)<-rep(unique(substr(files_time_agr,0,45)),2)
+
+
+    # data_all<-lapply(files_time_agr,
+    #                  function(x) nneo::nneo_file(product_code = substr(x,15,27),
+    #                                              site_code = Site,
+    #                                        year_month = year_month[1],
+    #                                        filename = x))
+
+
+
+    #assign DP name to nested tibbles:
+    #names(data_all)<-substr(files_time_agr,0,45)
     #assign spatial identifers to colnames of nested tibbles:
     for(i in 1:length(data_all)){
       first_two<-names(data_all[[i]][1:2])
