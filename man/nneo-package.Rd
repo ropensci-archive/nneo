@@ -17,6 +17,8 @@ NEON API docs: \url{http://data.neonscience.org/data-api}
 \item \code{\link[=nneo_site]{nneo_site()}}
 \item \code{\link[=nneo_locations]{nneo_locations()}}
 \item \code{\link[=nneo_location]{nneo_location()}}
+\item \code{\link[=nneo_data]{nneo_data()}}
+\item \code{\link[=nneo_file]{nneo_file()}}
 }
 }
 
@@ -34,8 +36,8 @@ servers know that the request is coming from R and from this package.
 No personal info is shared, just the package name and version for
 \pkg{nneo} and the underlying HTTP packages (\pkg{crul}, \pkg{curl})
 }
-
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com}
 }
 \keyword{package}
+
