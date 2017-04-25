@@ -14,7 +14,7 @@ nGET <- function(url, query = list(), ...) {
 
 errs <- function(x) {
   if (x$status_code > 201) {
-    xx <- jsonlite::fromJSON(x$parse())
+    xx <- jsonlite::fromJSON(x$parse("UTF-8"))
     if ("error" %in% names(xx)) {
       # match by status code
       fun <- match_err(x$status_code)$new()

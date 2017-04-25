@@ -7,12 +7,17 @@ test_that("nneo_data works as expected", {
                   year_month = "2016-05")
 
   expect_is(aa, 'list')
-  expect_type(aa$status, 'integer')
+
+  # there's no longer a status slot apparently
+  # expect_type(aa$status, 'integer')
+
   expect_is(aa$data, 'list')
   expect_is(aa$data$files, 'data.frame')
   expect_is(aa$data$files, 'tbl_df')
   expect_is(aa$data$productCode, 'character')
-  expect_is(aa$data$urls, 'character')
+
+  # there's no longer a urls slot apparently
+  # expect_is(aa$data$urls, 'character')
 })
 
 

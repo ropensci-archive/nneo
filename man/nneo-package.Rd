@@ -17,6 +17,8 @@ NEON API docs: \url{http://data.neonscience.org/data-api}
 \item \code{\link[=nneo_site]{nneo_site()}}
 \item \code{\link[=nneo_locations]{nneo_locations()}}
 \item \code{\link[=nneo_location]{nneo_location()}}
+\item \code{\link[=nneo_data]{nneo_data()}}
+\item \code{\link[=nneo_file]{nneo_file()}}
 }
 }
 
