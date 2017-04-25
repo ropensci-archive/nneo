@@ -4,9 +4,8 @@
 \alias{nneo_wrangle}
 \title{Download and wrangle NEON data products}
 \usage{
-nneo_wrangle(site_code = "BART", time_start = "2015-10-01",
-  time_end = "2015-11-15", data_var = "active radiation", time_agr = 30,
-  package = "basic")
+nneo_wrangle(site_code = "BART", time_start = NULL, time_end = NULL,
+  data_var = "active radiation", time_agr = 30, package = "basic")
 }
 \arguments{
 \item{site_code}{(character) a site code. required.}
@@ -15,21 +14,27 @@ nneo_wrangle(site_code = "BART", time_start = "2015-10-01",
 
 \item{time_end}{(character) YYYY-MM-DD end day to check for files. required.}
 
-\item{data_var}{(character) NEON data product(s) to be downloaded. The user may enter a specific, controlled, NEON data product or they may enter a generic term if wanting multiple, similar, NEON data products. For instance, defining \code{data_var} as "Photosythetically Active Radiation (Quantum Line)" would satisfy the former, and defining \code{data_var} as "Active Radiation" or just "Radiation" would satisfy the latter.}
+\item{data_var}{(character) NEON data product(s) to be downloaded. The user may enter a specific, controlled, NEON data product or they may enter a generic term if wanting multiple, similar, NEON data products. For instance, defining \code{data_var} as "Photosythetically Active Radiation (Quantum Line)" would satisfy the former, and defining \code{data_var} as "Active Radiation" or just "Radiation" would satisfy the latter. Required}
 
 \item{time_agr}{(numeric) Aggregation period of NEON data product(s) to be downloaded (e.g. \code{1} corresponds to a 1-minute data product). required.}
 
-\item{package}{(character) Package type to return, basic or expanded. required.  'Expanded' datasets are only available for the smallest \code{time_agr} of each NEON data product.}
+\item{package}{(character) Package type to return, basic or expanded. required.  'Expanded' datasets are only available for the smallest \code{time_agr} of each NEON data product. NOTE: 'expanded' datasets are much larger than 'basic' and will take considerably more time to download.}
 }
 \value{
-returns a tibble comprising relevant data products from all spatial locations at a NEON site_code.  Data products are displayed via \link{product_name}.\link{spatial_location}, e.g., 'difRadMean.000.060' is mean, diffuse, shortwave radiation as measured on the 6th measurement level of the tower (000.060) at the NEON site_code, while 'linePARMean.005.000' is mean, photosynthetically Active Radiation (PAR) as measured in the 5th soil plot (005.000) of the NEON site_code.  More information regarding spatial location and identifiers can be found at the references below.
+Returns a data.frame of relevant data products from all spatial locations at a NEON site for the custom time period.  Data products are displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is mean, diffuse, shortwave radiation as measured on the 6th measurement level of the tower (000.060) at the NEON site, while 'linePARMean.005.000' is mean, photosynthetically Active Radiation (PAR) as measured in the 5th soil plot (005.000) of the NEON site.  More information regarding spatial location and identifiers can be found at the references below.
 }
 \description{
-Download NEON data products via NEON's API and merge data per each
-measurement level and/or variable.
+Retrieve related datasets at a given NEON site for a custom time period, merged per measurement level and/or variable
+}
+\examples{
+#download 30-minute, radiation data from NEON's Bartlett (BART) site during Summer 2016:
+nneo_wrangle(site_code="BART", time_start="2016-06-20", time_end="2016-09-21", data_var="radiation")
+#download 1-minute, dust data from NEON's Sterling (STER) site for 2017-03-04
+nneo_wrangle(site_code="STER",time_start="2017-03-04",data_var="dust", time_agr=60)
 }
 \references{
-NEON Data Portal \link{http://data.neonscience.org/home}
+NEON Data Portal \url{http://data.neonscience.org/home}\cr
+NEON Data Product Availability \url{http://data.neonscience.org/view-data-availability}
 }
 \seealso{
 Currently none
@@ -52,4 +57,3 @@ Robert Lee
 \keyword{data,}
 \keyword{environmental}
 \keyword{products,}
-

@@ -36,8 +36,8 @@ servers know that the request is coming from R and from this package.
 No personal info is shared, just the package name and version for
 \pkg{nneo} and the underlying HTTP packages (\pkg{crul}, \pkg{curl})
 }
+
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com}
 }
 \keyword{package}
-

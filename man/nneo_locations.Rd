@@ -33,4 +33,3 @@ res$locationProperties
 res$locationChildren
 }
 }
-

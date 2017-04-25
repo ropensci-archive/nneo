@@ -1,11 +1,11 @@
 #############################################################################################
-#' @title  Download and wrangle NEON data products
+#' @title Download and wrangle NEON data products
 
 #' @author Josh Roberti \email{jaroberti87@gmail.com}\cr
 #' Dave Durden\cr
 #' Robert Lee
 
-#' @description Retrieve related datasets at a given NEON site over a custom time period, merged per measurement level and/or variable
+#' @description Retrieve related datasets at a given NEON site for a custom time period, merged per measurement level and/or variable
 #'
 #' @param site_code (character) a site code. required.
 #' @param time_start (character) YYYY-MM-DD start day to check for files. required.
@@ -14,20 +14,20 @@
 #' @param data_var (character) NEON data product(s) to be downloaded. The user may enter a specific, controlled, NEON data product or they may enter a generic term if wanting multiple, similar, NEON data products. For instance, defining \code{data_var} as "Photosythetically Active Radiation (Quantum Line)" would satisfy the former, and defining \code{data_var} as "Active Radiation" or just "Radiation" would satisfy the latter. Required
 #' @param package (character) Package type to return, basic or expanded. required.  'Expanded' datasets are only available for the smallest \code{time_agr} of each NEON data product. NOTE: 'expanded' datasets are much larger than 'basic' and will take considerably more time to download.
 
-#' @return returns a tibble comprising relevant data products from all spatial locations at a NEON site.  Data products are displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is mean, diffuse, shortwave radiation as measured on the 6th measurement level of the tower (000.060) at the NEON site, while 'linePARMean.005.000' is mean, photosynthetically Active Radiation (PAR) as measured in the 5th soil plot (005.000) of the NEON site.  More information regarding spatial location and identifiers can be found at the references below.
+#' @return Returns a data.frame of relevant data products from all spatial locations at a NEON site for the custom time period.  Data products are displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is mean, diffuse, shortwave radiation as measured on the 6th measurement level of the tower (000.060) at the NEON site, while 'linePARMean.005.000' is mean, photosynthetically Active Radiation (PAR) as measured in the 5th soil plot (005.000) of the NEON site.  More information regarding spatial location and identifiers can be found at the references below.
 #'
 #' @references
-#' NEON Data Portal [http://data.neonscience.org/home]
-#' NEON Data Product Availability [http://data.neonscience.org/view-data-availability]
+#' NEON Data Portal \url{http://data.neonscience.org/home}\cr
+#' NEON Data Product Availability \url{http://data.neonscience.org/view-data-availability}
 
 #' @keywords Ecology, environmental data, climate, data, data products,
 #' National Ecological Observatory Network (NEON), NEON, atmosphere
 
 #' @examples
-#' download 30-minute, radiation data from NEON's Bartlett (BART) site during Summer 2016:
-#' nneo_wrangle(site_code="BART", time_start="2016-06-20", time_end="2016-09-21", data_var="radiation", time_agr=30, package="basic")
-#' download 1-minute, precipitation data from NEON's Sterling (STER) site for 2016-01-08 thru 2016-01-10
-#' nneo_wrangle(site_code="STER", time_start="2017-01-08", time_end="2017-01-10", data_var="precipitation", time_agr=1, package="basic")
+#' #download 30-minute, radiation data from NEON's Bartlett (BART) site during Summer 2016:
+#' nneo_wrangle(site_code="BART", time_start="2016-06-20", time_end="2016-09-21", data_var="radiation")
+#' #download 1-minute, dust data from NEON's Sterling (STER) site for 2017-03-04
+#' nneo_wrangle(site_code="STER",time_start="2017-03-04",data_var="dust", time_agr=60)
 
 #' @seealso Currently none
 
@@ -48,9 +48,13 @@
 #   Josh Roberti (2017-04-20 thru 04-24)
 #     Amended code to submit to rOpenSci
 ##############################################################################################
-
-nneo_wrangle<-function(site_code="BART",time_start="2015-10-01",time_end="2015-11-15",
+nneo_wrangle<-function(site_code="BART",time_start=NULL,time_end=NULL,
                    data_var= "active radiation",time_agr=30,package="basic"){
+    #check for NULL dates:
+    if(is.null(time_start) & is.null(time_end)){stop("Please enter a start time and/or end time")}
+    if(is.null(time_start)){time_start<-time_end}
+    if(is.null(time_end)){time_end<-time_start}
+
     #grab site metadata:
     site_code_info<-nneo::nneo_site(site_code)
     #get data product code(s) if valid:
@@ -72,7 +76,7 @@ nneo_wrangle<-function(site_code="BART",time_start="2015-10-01",time_end="2015-1
     files_package<-do.call("rbind",lapply(lapply(var_data, "[[", "data"),
                                             "[[", "files"))
     #get filenames that match user requested time_agr and sort:
-    files_time_agr<-sort(files_package$name[grep(paste0(time_agr,"min.csv"),
+    files_time_agr<-sort(files_package$name[grep(paste0(time_agr,".*.csv"),
                                         files_package$name)])
     #get the data using nneo_file:
     data_all<-lapply(year_month, function(y) lapply(unique(files_time_agr),
