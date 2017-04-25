@@ -1,20 +1,20 @@
 #############################################################################################
-#' @title Download and wrangle NEON data products
+#' @title Download and wrangle NEON's sensor-based data products
 
 #' @author Josh Roberti \email{jaroberti87@gmail.com}\cr
 #' Dave Durden\cr
 #' Robert Lee
 
-#' @description Retrieve related datasets at a given NEON site for a custom time period, merged per measurement level and/or variable
+#' @description Retrieve related, sensor-based datasets at a given NEON site for a custom time period, merged per measurement level and/or variable
 #'
-#' @param site_code (character) a site code. required.
-#' @param time_start (character) YYYY-MM-DD start day to check for files. required.
-#' @param time_end (character) YYYY-MM-DD end day to check for files. required.
-#' @param time_agr (numeric) Aggregation period of NEON data product(s) to be downloaded (e.g. `1` corresponds to a 1-minute data product). required.
+#' @param site_code (character) a site code. Required.
+#' @param time_start (character) YYYY-MM-DD start day to check for files. Required if \code{is.null(time_end)}
+#' @param time_end (character) YYYY-MM-DD end day to check for files. Required if \code{is.null(time_start)}
+#' @param time_agr (numeric) Aggregation period, given in minutes, of NEON data product(s) to be downloaded (e.g. `1` corresponds to a 1-minute data product). Required.
 #' @param data_var (character) NEON data product(s) to be downloaded. The user may enter a specific, controlled, NEON data product or they may enter a generic term if wanting multiple, similar, NEON data products. For instance, defining \code{data_var} as "Photosythetically Active Radiation (Quantum Line)" would satisfy the former, and defining \code{data_var} as "Active Radiation" or just "Radiation" would satisfy the latter. Required
-#' @param package (character) Package type to return, basic or expanded. required.  'Expanded' datasets are only available for the smallest \code{time_agr} of each NEON data product. NOTE: 'expanded' datasets are much larger than 'basic' and will take considerably more time to download.
+#' @param package (character) Package type to return, basic or expanded. 'Expanded' datasets are only available for the smallest \code{time_agr} of each NEON data product. NOTE: 'expanded' datasets are much larger than 'basic' and will take considerably more time to download. Required
 
-#' @return Returns a data.frame of relevant data products from all spatial locations at a NEON site for the custom time period.  Data products are displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is mean, diffuse, shortwave radiation as measured on the 6th measurement level of the tower (000.060) at the NEON site, while 'linePARMean.005.000' is mean, photosynthetically Active Radiation (PAR) as measured in the 5th soil plot (005.000) of the NEON site.  More information regarding spatial location and identifiers can be found at the references below.
+#' @return Returns a data.frame of relevant data products from all spatial locations at a NEON site for the custom time period.  Data products are displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is mean, diffuse, shortwave radiation as measured on the 6th measurement level of a NEON tower (000.060), while 'linePARMean.005.000' is mean, photosynthetically Active Radiation (PAR) as measured at the 5th soil plot (005.000) of a NEON site.  More information regarding spatial location and identifiers can be found at the references below.
 #'
 #' @references
 #' NEON Data Portal \url{http://data.neonscience.org/home}\cr
@@ -48,13 +48,12 @@
 #   Josh Roberti (2017-04-20 thru 04-24)
 #     Amended code to submit to rOpenSci
 ##############################################################################################
-nneo_wrangle<-function(site_code="BART",time_start=NULL,time_end=NULL,
+nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
                    data_var= "active radiation",time_agr=30,package="basic"){
     #check for NULL dates:
     if(is.null(time_start) & is.null(time_end)){stop("Please enter a start time and/or end time")}
     if(is.null(time_start)){time_start<-time_end}
     if(is.null(time_end)){time_end<-time_start}
-
     #grab site metadata:
     site_code_info<-nneo::nneo_site(site_code)
     #get data product code(s) if valid:
@@ -65,7 +64,7 @@ nneo_wrangle<-function(site_code="BART",time_start=NULL,time_end=NULL,
     #create year_month variable for nneo_data and nneo_file:
     year_month<-c(substr(time_start,0,7),substr(time_end,0,7))
     #check if it's same month - won't need to gather multiple monthly files:
-    if(length(year_month)==1){year_month<-year_month[1]}
+    if(length(unique(year_month))==1){year_month<-unique(year_month)}
     #use nneo_data to get available file(s) via user input:
     var_data<-unlist(lapply(year_month, function(y) lapply(product_code,
                      function(x) nneo::nneo_data(product_code = x,
@@ -76,14 +75,14 @@ nneo_wrangle<-function(site_code="BART",time_start=NULL,time_end=NULL,
     files_package<-do.call("rbind",lapply(lapply(var_data, "[[", "data"),
                                             "[[", "files"))
     #get filenames that match user requested time_agr and sort:
-    files_time_agr<-sort(files_package$name[grep(paste0(time_agr,".*.csv"),
-                                        files_package$name)])
+    searh_terms<-paste0(time_agr,"min.csv|",time_agr,"_minutes.csv")
+    files_time_agr<-sort(files_package$name[grep(searh_terms,files_package$name)])
     #get the data using nneo_file:
     data_all<-lapply(year_month, function(y) lapply(unique(files_time_agr),
                                    function(x) nneo::nneo_file(product_code = substr(x,15,27),
                                                                site_code = site_code,
                                                                year_month = y,
-                                                               filename = x)))#,recursive = FALSE)
+                                                               filename = x)))
     #name first level of list:
     names(data_all)<-year_month
     #rbind dataframes of similar data:
