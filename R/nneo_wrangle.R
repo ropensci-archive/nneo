@@ -10,20 +10,20 @@
 #'
 #' @param site_code (character) a site code. Required.
 #' @param time_start (character) YYYY-MM-DD start day to check for files.
-#' Required if [is.null(time_end)]
+#' Required if time_end=NULL
 #' @param time_end (character) YYYY-MM-DD end day to check for files.
-#' Required if [is.null(time_start)]
+#' Required if time_start=NULL
 #' @param time_agr (numeric) Aggregation period, given in minutes, of NEON data
 #' product(s) to be downloaded
 #' (e.g. `1` corresponds to a 1-minute data product). Required.
 #' @param data_var (character) NEON data product(s) to be downloaded. The user
 #' may enter a specific, controlled, NEON data product or they may enter a
 #' generic term if wanting multiple, similar, NEON data products. For instance,
-#' defining [data_var] as "Photosythetically Active Radiation (Quantum Line)"
-#' would satisfy the former, and defining [data_var] as "Active Radiation" or
+#' defining data_var as "Photosythetically Active Radiation (Quantum Line)"
+#' would satisfy the former, and defining data_var as "Active Radiation" or
 #' just "Radiation" would satisfy the latter. Required
 #' @param package (character) Package type to return, basic or expanded.
-#' 'Expanded' datasets are only available for the smallest [time_agr] of each
+#' 'Expanded' datasets are only available for the smallest time_agr of each
 #' NEON data product. NOTE: 'expanded' datasets are much larger than 'basic'
 #' and will take considerably more time to download. Required
 

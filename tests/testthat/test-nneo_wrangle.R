@@ -6,8 +6,8 @@ test_that("nneo_data works as expected", {
   aa <- nneo_wrangle(site_code="BART", time_start="2016-06-20",
                      time_end="2016-09-21", data_var="radiation")
 
-  expect_is(aa, 'data.frame')
-  expect_is(aa[,grep(".*Mean.*",names(aa))[1]], 'numeric')
-  expect_is(aa[,1], 'character')
+  expect_is(aa, 'tbl_df')
+  expect_is(aa$difRadMean.000.060, 'numeric')
+  expect_is(aa$startDateTime, 'character')
 
 })

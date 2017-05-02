@@ -12,16 +12,16 @@ nneo_wrangle(site_code = "BART", time_start = "2016-06-20",
 \item{site_code}{(character) a site code. Required.}
 
 \item{time_start}{(character) YYYY-MM-DD start day to check for files.
-Required if \link{is.null(time_end)}}
+Required if time_end=NULL}
 
 \item{time_end}{(character) YYYY-MM-DD end day to check for files.
-Required if \link{is.null(time_start)}}
+Required if time_start=NULL}
 
 \item{data_var}{(character) NEON data product(s) to be downloaded. The user
 may enter a specific, controlled, NEON data product or they may enter a
 generic term if wanting multiple, similar, NEON data products. For instance,
-defining \link{data_var} as "Photosythetically Active Radiation (Quantum Line)"
-would satisfy the former, and defining \link{data_var} as "Active Radiation" or
+defining data_var as "Photosythetically Active Radiation (Quantum Line)"
+would satisfy the former, and defining data_var as "Active Radiation" or
 just "Radiation" would satisfy the latter. Required}
 
 \item{time_agr}{(numeric) Aggregation period, given in minutes, of NEON data
@@ -29,12 +29,12 @@ product(s) to be downloaded
 (e.g. \code{1} corresponds to a 1-minute data product). Required.}
 
 \item{package}{(character) Package type to return, basic or expanded.
-'Expanded' datasets are only available for the smallest \link{time_agr} of each
+'Expanded' datasets are only available for the smallest time_agr of each
 NEON data product. NOTE: 'expanded' datasets are much larger than 'basic'
 and will take considerably more time to download. Required}
 }
 \value{
-Returns a data.frame of relevant data products from all spatial
+Returns a tibble of relevant data products from all spatial
 locations at a NEON site for the custom time period.  Data products are
 displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is
 mean, diffuse, shortwave radiation as measured on the 6th measurement level
