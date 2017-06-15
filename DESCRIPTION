@@ -6,7 +6,7 @@ Description: NEON API (<http://data.neonscience.org/data-api>) client.
 Version: 0.1.0
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"), 
-      email = "myrmecocystus@gmail.com"),
+      email = "myrmecocystus+r@gmail.com"),
     person("Josh", "Roberti", role = "ctb", 
       email = "jaroberti87@@gmail.com")
     )
