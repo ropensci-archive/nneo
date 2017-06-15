@@ -12,6 +12,7 @@
 #'  \item [nneo_location()]
 #'  \item [nneo_data()]
 #'  \item [nneo_file()]
+#'  \item [nneo_wrangle()]
 #' }
 #'
 #' @section Curl options:
@@ -30,4 +31,5 @@
 #' @docType package
 #' @keywords package
 #' @author Scott Chamberlain \email{myrmecocystus@@gmail.com}
+#' @author Josh Roberti \email{jaroberti87@@gmail.com}
 NULL

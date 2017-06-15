@@ -7,8 +7,7 @@ Version: 0.1.0
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"), 
       email = "myrmecocystus+r@gmail.com"),
-    person("Josh", "Roberti", role = "ctb", 
-      email = "jaroberti87@@gmail.com")
+    person("Josh", "Roberti", role = "ctb")
     )
 License: MIT + file LICENSE
 URL: https://github.com/ropenscilabs/nneo

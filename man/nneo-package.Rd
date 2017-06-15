@@ -19,6 +19,7 @@ NEON API docs: \url{http://data.neonscience.org/data-api}
 \item \code{\link[=nneo_location]{nneo_location()}}
 \item \code{\link[=nneo_data]{nneo_data()}}
 \item \code{\link[=nneo_file]{nneo_file()}}
+\item \code{\link[=nneo_wrangle]{nneo_wrangle()}}
 }
 }
 
@@ -39,5 +40,7 @@ No personal info is shared, just the package name and version for
 
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com}
+
+Josh Roberti \email{jaroberti87@gmail.com}
 }
 \keyword{package}
