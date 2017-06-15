@@ -38,7 +38,7 @@
 #' nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",
 #'   year_month = "2016-05", verbose = TRUE)
 #' }
-nneo_data <- function(product_code, site_code, year_month, package = NULL, ...) {
+nneo_data <- function(product_code, site_code, year_month, package = NULL, ...){
   res <- neon_parse(
     nGET(
       file.path(neon_base(), "data", product_code, site_code, year_month),
