@@ -3,10 +3,12 @@ Type: Package
 Title: NEON API Client
 Description: NEON API (<http://data.neonscience.org/data-api>) client. 
     Includes methods for interacting with all API routes.
-Version: 0.0.3.9100
+Version: 0.1.0
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"), 
-      email = "myrmecocystus@gmail.com")
+      email = "myrmecocystus@gmail.com"),
+    person("Josh", "Roberti", role = "ctb", 
+      email = "jaroberti87@@gmail.com")
     )
 License: MIT + file LICENSE
 URL: https://github.com/ropenscilabs/nneo
@@ -21,6 +23,5 @@ Imports:
     fauxpas
 Suggests:
     roxygen2 (>= 6.0.1),
-    testthat,
-    covr
+    testthat
 RoxygenNote: 6.0.1
