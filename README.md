@@ -7,7 +7,7 @@ nneo
 [![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
 [![codecov.io](https://codecov.io/github/ropenscilabs/nneo/coverage.svg?branch=master)](https://codecov.io/github/ropenscilabs/nneo?branch=master)
 [![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/nneo)](https://github.com/metacran/cranlogs.app)
-
+[![cran version](https://www.r-pkg.org/badges/version/nneo)](https://cran.r-project.org/package=nneo)
 
 `nneo` - R client for [NEON API](http://data.neonscience.org/data-api)
 
@@ -17,7 +17,7 @@ Routes and R methods
 * `/sites` - `nneo_sites()`/`nneo_site()`
 * `/locations` - `nneo_locations()`/`nneo_location()`
 * `/data` - `nneo_data()`/`nneo_file()`
-* `nneo_wrangle()` - uses `nneo_site()`, `nneo_data()`, and 
+* `nneo_wrangle()` - uses `nneo_site()`, `nneo_data()`, and
 `nneo_file()` internally
 
 
@@ -97,14 +97,14 @@ nneo_sites()
 ```r
 res <- nneo_location("HARV")
 names(res)
-#>  [1] "locationDescription"      "locationElevation"       
-#>  [3] "locationUtmEasting"       "locationUtmHemisphere"   
-#>  [5] "locationUtmZone"          "locationName"            
-#>  [7] "siteCode"                 "locationParent"          
-#>  [9] "locationChildren"         "locationChildrenUrls"    
-#> [11] "locationType"             "locationProperties"      
-#> [13] "locationDecimalLatitude"  "locationParentUrl"       
-#> [15] "locationUtmNorthing"      "domainCode"              
+#>  [1] "locationDescription"      "locationElevation"
+#>  [3] "locationUtmEasting"       "locationUtmHemisphere"
+#>  [5] "locationUtmZone"          "locationName"
+#>  [7] "siteCode"                 "locationParent"
+#>  [9] "locationChildren"         "locationChildrenUrls"
+#> [11] "locationType"             "locationProperties"
+#> [13] "locationDecimalLatitude"  "locationParentUrl"
+#> [15] "locationUtmNorthing"      "domainCode"
 #> [17] "locationDecimalLongitude"
 ```
 
@@ -125,13 +125,13 @@ nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",
 #> 4 0xd6e86fd9  NEON.D19.HEAL.DP1.00098.001.00000.000.040.001.RH_1min.csv
 #> 5 0xb2506dd5  NEON.D19.HEAL.DP1.00098.001.00000.003.000.001.RH_1min.csv
 #> # ... with 2 more variables: url <chr>, size <chr>
-#> 
+#>
 #> $data$productCode
 #> [1] "DP1.00098.001"
-#> 
+#>
 #> $data$month
 #> [1] "2016-05"
-#> 
+#>
 #> $data$siteCode
 #> [1] "HEAL"
 ```
@@ -148,3 +148,6 @@ nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",
 * Get citation information for `nneo` in R doing `citation(package = nneo')`
 * Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
 By participating in this project you agree to abide by its terms.
+
+
+[![ropensci_footer](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
