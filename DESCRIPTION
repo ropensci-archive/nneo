@@ -1,11 +1,11 @@
 Package: nneo
 Type: Package
-Title: NEON API Client
-Description: NEON API (<http://data.neonscience.org/data-api>) client. 
-    Includes methods for interacting with all API routes.
+Title: 'NEON' 'API' Client
+Description: 'NEON' 'API' (<http://data.neonscience.org/data-api>) client.
+    Includes methods for interacting with all 'API' routes.
 Version: 0.1.0
 Authors@R: c(
-    person("Scott", "Chamberlain", role = c("aut", "cre"), 
+    person("Scott", "Chamberlain", role = c("aut", "cre"),
       email = "myrmecocystus+r@gmail.com"),
     person("Josh", "Roberti", role = "ctb")
     )
