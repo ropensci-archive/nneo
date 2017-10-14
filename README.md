@@ -21,9 +21,9 @@ Routes and R methods
 `nneo_file()` internally
 
 
-## installation
+## Installation
 
-cran version
+CRAN version
 
 
 ```r
@@ -42,7 +42,7 @@ devtools::install_github("ropenscilabs/nneo")
 library("nneo")
 ```
 
-## list products
+## List Products
 
 
 ```r
@@ -68,7 +68,7 @@ nneo_products()
 #> #   siteCodes <list>
 ```
 
-## list sites
+## List Sites
 
 
 ```r
@@ -91,7 +91,7 @@ nneo_sites()
 #> #   domainCode <chr>, siteCode <chr>, dataProducts <list>, siteName <chr>
 ```
 
-## list a location
+## List a location
 
 
 ```r
@@ -108,7 +108,7 @@ names(res)
 #> [17] "locationDecimalLongitude"
 ```
 
-## data
+## Data
 
 
 ```r
