@@ -3,7 +3,7 @@ Type: Package
 Title: 'NEON' 'API' Client
 Description: 'NEON' 'API' (<http://data.neonscience.org/data-api>) client.
     Includes methods for interacting with all 'API' routes.
-Version: 0.1.0.9100
+Version: 0.1.1.9110
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"),
       email = "myrmecocystus+r@gmail.com"),

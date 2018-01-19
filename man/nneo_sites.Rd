@@ -23,10 +23,10 @@ Sites
 }
 \examples{
 \dontrun{
-## list products
+## list sites
 nneo_sites()
 
-## get a product
+## get a site
 res <- nneo_site("JORN")
 res$dataProducts
 res$siteDescription

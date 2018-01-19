@@ -19,7 +19,6 @@
 #'
 #' ## curl options
 #' nneo_product("DP3.30018.001", verbose = TRUE)
-#' nneo_product("DP3.30018.001", verbose = TRUE, timeout_ms = 1000)
 #' nneo_product("DP3.30018.001", verbose = TRUE, useragent = "hello world")
 #' }
 nneo_products <- function(...) {
