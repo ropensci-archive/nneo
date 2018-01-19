@@ -12,6 +12,20 @@ nGET <- function(url, query = list(), ...) {
   res$parse("UTF-8")
 }
 
+nGET2 <- function(url, query = list(), ...) {
+  cli <- crul::HttpClient$new(
+    url = url,
+    opts = list(...),
+    headers = list(
+      `User-Agent` = nneo_ua(),
+      'X-USER-AGENT' = nneo_ua()
+    )
+  )
+  res <- cli$get(query = query)
+  res$raise_for_status()
+  res$parse("UTF-8")
+}
+
 errs <- function(x) {
   if (x$status_code > 201) {
     xx <- jsonlite::fromJSON(x$parse("UTF-8"))

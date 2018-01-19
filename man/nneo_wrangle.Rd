@@ -6,7 +6,7 @@
 \usage{
 nneo_wrangle(site_code = "BART", time_start = "2016-06-20",
   time_end = NULL, data_var = "active radiation", time_agr = 30,
-  package = "basic")
+  package = "basic", ...)
 }
 \arguments{
 \item{site_code}{(character) a site code. Required.}
@@ -32,6 +32,9 @@ product(s) to be downloaded
 'Expanded' datasets are only available for the smallest time_agr of each
 NEON data product. NOTE: 'expanded' datasets are much larger than 'basic'
 and will take considerably more time to download. Required}
+
+\item{...}{named curl options passed on to \code{\link[crul]{HttpClient}},
+e.g., \code{list(verbose = TRUE)} or \code{list(timeout_ms = 1000)}}
 }
 \value{
 Returns a tibble of relevant data products from all spatial

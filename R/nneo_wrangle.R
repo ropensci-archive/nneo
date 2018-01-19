@@ -26,7 +26,7 @@
 #' 'Expanded' datasets are only available for the smallest time_agr of each
 #' NEON data product. NOTE: 'expanded' datasets are much larger than 'basic'
 #' and will take considerably more time to download. Required
-
+#' @template curl
 #' @return Returns a tibble of relevant data products from all spatial
 #' locations at a NEON site for the custom time period.  Data products are
 #' displayed via 'productName.spatialLocation', e.g., 'difRadMean.000.060' is
@@ -75,7 +75,7 @@
 #     Syntax fixes; reorganized data filtering logic to remove NA columns
 ################################################################################
 nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
-                   data_var= "active radiation",time_agr=30,package="basic"){
+                   data_var= "active radiation",time_agr=30,package="basic", ...){
     #check for NULL dates:
     if(is.null(time_start) & is.null(time_end)){stop("Please enter a start time
                                                      and/or end time")}
@@ -104,30 +104,39 @@ nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
     files_package<-do.call("rbind",lapply(lapply(var_data, "[[", "data"),
                                             "[[", "files"))
     #get filenames that match user requested time_agr and sort:
-    searh_terms<-paste0(time_agr,"min.csv|",time_agr,"_minutes.csv")
-    files_time_agr<-sort(files_package$name[grep(searh_terms,
-                                                 files_package$name)])
+    # searh_terms<-paste0(time_agr,"min.csv|",time_agr,"_minutes.csv")
+    searh_terms <- paste0(time_agr, "min")
+    files_time_agr <- sort(files_package$url[grep(searh_terms,
+                                                 files_package$url)])
     #get the data using nneo_file:
-    data_all<-lapply(year_month, function(y) lapply(unique(files_time_agr),
-                                   function(x) nneo::nneo_file(
-                                     product_code = substr(x,15,27),
-                                     site_code = site_code,
-                                     year_month = y,
-                                     filename = x)))
-    #name first level of list:
-    names(data_all)<-year_month
+    # data_all <- lapply(year_month, function(y) {
+    #     lapply(unique(files_time_agr), function(x) {
+    #         nneo::nneo_file(product_code = substr(x, 15, 27), 
+    #             site_code = site_code, year_month = y, filename = x)
+    #     })
+    # })
+    data_all <- lapply(files_time_agr, nGET2, ...)
+    data_all <- lapply(data_all, function(z) {
+        data.table::fread(z, stringsAsFactors = FALSE, data.table = FALSE)
+    })
+    data_merge <- tibble::as_tibble(
+        data.table::setDF(data.table::rbindlist(data_all, fill=TRUE, use.names=TRUE))
+    )
+
+    # name first level of list:
+    # names(data_all)<-year_month
     #rbind dataframes of similar data:
-    data_length<-unique(unlist(lapply(data_all, function(x) length(x))))
-    interim<-list()
-    for(i in 1:data_length){
-      interim[[i]]<-do.call("rbind",lapply(data_all, "[[", i))
-      names(interim[[i]])<-c(names(interim[[i]])[1:2],
-                          paste0(names(interim[[i]][3:length(interim[[i]])]),
-                                 substr(unique(files_time_agr),34,41)[i]))
-    }
+    # data_length<-unique(unlist(lapply(data_all, function(x) length(x))))
+    # interim<-list()
+    # for(i in 1:data_length){
+    #   interim[[i]]<-do.call("rbind",lapply(data_all, "[[", i))
+    #   names(interim[[i]])<-c(names(interim[[i]])[1:2],
+    #                       paste0(names(interim[[i]][3:length(interim[[i]])]),
+    #                              substr(unique(files_time_agr),34,41)[i]))
+    # }
     #merge NEON data then convert startDateTime and endDateTime to POSIX format:
-    data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime",
-                                                       "endDateTime")),interim)
+    # data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime",
+    #                                                    "endDateTime")),interim)
     #final filter by date:
     date_filt_start<-min(grep(time_start,
                               as.Date(substr(data_merge$startDateTime,0,10))))
@@ -137,6 +146,6 @@ nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
     #remove columns with all NAs:
     data_final<-data_merge[, !apply(is.na(data_filtered), 2, all)]
     #convert to Tibble format and output:
-    return(tibble::as_data_frame(data_final))
+    return(data_final)
 }
 
