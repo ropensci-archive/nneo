@@ -73,9 +73,12 @@
 #     Amended code to submit to rOpenSci
 #   Josh Roberti (2017-05-02)
 #     Syntax fixes; reorganized data filtering logic to remove NA columns
+#   Josh Roberti & Robert Lee (2018-02-13)
+#      Fixing accidental overwrites of spatial instances
 ################################################################################
-nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
-                   data_var= "active radiation",time_agr=30,package="basic", ...){
+nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
+                   data_var= "temperature",time_agr=30,package="basic", ...){
+
     #check for NULL dates:
     if(is.null(time_start) & is.null(time_end)){stop("Please enter a start time
                                                      and/or end time")}
@@ -108,20 +111,37 @@ nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
     searh_terms <- paste0(time_agr, "min")
     files_time_agr <- sort(files_package$url[grep(searh_terms,
                                                  files_package$url)])
+
     #get the data using nneo_file:
     # data_all <- lapply(year_month, function(y) {
     #     lapply(unique(files_time_agr), function(x) {
-    #         nneo::nneo_file(product_code = substr(x, 15, 27), 
+    #         nneo::nneo_file(product_code = substr(x, 15, 27),
     #             site_code = site_code, year_month = y, filename = x)
     #     })
     # })
-    data_all <- lapply(files_time_agr, nGET2, ...)
+    data_all <- lapply(files_time_agr, nneo:::nGET2, ...)
     data_all <- lapply(data_all, function(z) {
         data.table::fread(z, stringsAsFactors = FALSE, data.table = FALSE)
     })
-    data_merge <- tibble::as_tibble(
-        data.table::setDF(data.table::rbindlist(data_all, fill=TRUE, use.names=TRUE))
-    )
+
+    #keep all spatial levels (bug fix)
+    spatial_search<-"\\.\\d{3}\\.\\d{3}\\.\\d{3}"
+    #grep(spatial_terms,files_time_agr[1])
+    spatial_terms<-sub("\\.\\d{3}\\.","",stringr::str_extract(files_time_agr,spatial_search))
+    #assign spatial terms to names:
+    names(data_all)<-spatial_terms
+    #append spatial terms to col names:
+    for(i in 1:length(data_all)){
+            names(data_all[[i]])<-c(names(data_all[[i]][,1:2]),
+                                    paste0(names(data_all[[i]][3:length(data_all[[i]])]),".",spatial_terms[i]))
+    }
+
+    #browser()
+
+    #Scott's code:
+    # data_merge <- tibble::as_tibble(
+    #     data.table::setDF(data.table::rbindlist(data_all, fill=TRUE, use.names=TRUE))
+    # )
 
     # name first level of list:
     # names(data_all)<-year_month
@@ -135,16 +155,17 @@ nneo_wrangle<-function(site_code="BART",time_start="2016-06-20",time_end=NULL,
     #                              substr(unique(files_time_agr),34,41)[i]))
     # }
     #merge NEON data then convert startDateTime and endDateTime to POSIX format:
-    # data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime",
-    #                                                    "endDateTime")),interim)
+    data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime",
+                                                       "endDateTime")),data_all)
     #final filter by date:
+
     date_filt_start<-min(grep(time_start,
                               as.Date(substr(data_merge$startDateTime,0,10))))
     date_filt_end<-max(grep(time_end,
                             as.Date(substr(data_merge$startDateTime,0,10))))
     data_filtered<-data_merge[date_filt_start:date_filt_end,]
     #remove columns with all NAs:
-    data_final<-data_merge[, !apply(is.na(data_filtered), 2, all)]
+    data_final<-data_filtered[, !apply(is.na(data_filtered), 2, all)]
     #convert to Tibble format and output:
     return(data_final)
 }
