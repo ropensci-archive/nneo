@@ -48,9 +48,9 @@
 #' #download 30-minute, radiation data from NEON's Bartlett site for Summer 2016
 #' nneo_wrangle(site_code="BART", time_start="2016-06-20",
 #'   time_end="2016-09-21", data_var="radiation")
-#' #download 1-minute, dust data from NEON's Sterling (STER) site for 2017-03-04
+#' #download 1-minute, temperature data from NEON's Sterling (STER) site for 2017-03-04
 #' nneo_wrangle(site_code="STER",time_start="2017-03-04",
-#'   data_var="air temperature",time_agr=30)
+#'   data_var="temperature",time_agr=30)
 #' }
 
 #' @seealso Currently none
@@ -74,7 +74,7 @@
 #   Josh Roberti (2017-05-02)
 #     Syntax fixes; reorganized data filtering logic to remove NA columns
 #   Josh Roberti & Robert Lee (2018-02-13)
-#      Fixing accidental overwrites of spatial instances
+#      Fixing accidental overwrites of spatial instances & date filtering bug
 ################################################################################
 nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
                    data_var= "temperature",time_agr=30,package="basic", ...){
@@ -120,7 +120,7 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     #             site_code = site_code, year_month = y, filename = x)
     #     })
     # })
-    data_all <- lapply(files_time_agr, nneo:::nGET2, ...)
+    data_all <- lapply(files_time_agr, nGET2, ...)
     data_all <- lapply(data_all, function(z) {
         data.table::fread(z, stringsAsFactors = FALSE, data.table = FALSE)
     })
@@ -139,21 +139,19 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
             row.names(data_all[[i]])<-NULL
     }
 
-    browser()
-
-    #create 'true' time sequence to merge to (in case of missing time stamps)
-    true_start<-as.Date(time_start,tz = "UTC")
-    true_end<-as.Date(time_end,tz = "UTC")
-    true_time.df<-data.frame(startDateTime=seq(from=lubridate::as_datetime(true_start,tz="UTC"),
-                                 to=lubridate::as_datetime(true_end),by=time_agr*60))
-    true_time.df$endDateTime<-seq(from=true_time.df$startDateTime[2],
-                                               to=lubridate::as_datetime(true_time.df$startDateTime[nrow(true_time.df)])+time_agr*60,
-                                  by=time_agr*60)
-    #remove last row (overlaps into next day):
-    true_seq<-true_time.df[1:(nrow(true_time.df)-1),]
-
-    #add true_time to data_all:
-    data_all[[length(data_all)+1]]<-true_seq
+    # #create 'true' time sequence to merge to (in case of missing time stamps)
+    # true_start<-as.Date(time_start,tz = "UTC")
+    # true_end<-as.Date(time_end,tz = "UTC")
+    # true_time.df<-data.frame(startDateTime=seq(from=lubridate::as_datetime(true_start,tz="UTC"),
+    #                              to=lubridate::as_datetime(true_end),by=time_agr*60))
+    # true_time.df$endDateTime<-seq(from=true_time.df$startDateTime[2],
+    #                                            to=lubridate::as_datetime(true_time.df$startDateTime[nrow(true_time.df)])+time_agr*60,
+    #                               by=time_agr*60)
+    # #remove last row (overlaps into next day):
+    # true_seq<-true_time.df[1:(nrow(true_time.df)-1),]
+    #
+    # #add true_time to data_all:
+    # data_all[[length(data_all)+1]]<-true_seq
 
     # data_merge <- tibble::as_tibble(
     #     data.table::setDF(data.table::rbindlist(data_all, fill=TRUE, use.names=TRUE))
@@ -177,19 +175,13 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     #                              substr(unique(files_time_agr),34,41)[i]))
     # }
 
-    browser()
     #merge NEON data then convert startDateTime and endDateTime to POSIX format:
-    data_merge<-Reduce(function(x, y) merge(x, y, all=T, by=c("startDateTime",
-                                                       "endDateTime")),data_all)
+    data_merge<-Reduce(function(x, y) merge(x, y, all=T, by=c("startDateTime","endDateTime")),data_all)
     #final filter by date:
-
     date_filt_start<-min(grep(time_start,
                               as.Date(substr(data_merge$startDateTime,0,10))))
     date_filt_end<-max(grep(time_end,
                             as.Date(substr(data_merge$startDateTime,0,10))))
-
-
-
     data_filtered<-data_merge[date_filt_start:date_filt_end,]
     #remove columns with all NAs:
     data_final<-data_filtered[, !apply(is.na(data_filtered), 2, all)]
