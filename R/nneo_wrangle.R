@@ -112,6 +112,7 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     files_time_agr <- sort(files_package$url[grep(searh_terms,
                                                  files_package$url)])
 
+
     #get the data using nneo_file:
     # data_all <- lapply(year_month, function(y) {
     #     lapply(unique(files_time_agr), function(x) {
@@ -134,14 +135,35 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     for(i in 1:length(data_all)){
             names(data_all[[i]])<-c(names(data_all[[i]][,1:2]),
                                     paste0(names(data_all[[i]][3:length(data_all[[i]])]),".",spatial_terms[i]))
+            #set row.names to NULL:
+            row.names(data_all[[i]])<-NULL
     }
 
-    #browser()
+    browser()
 
-    #Scott's code:
+    #create 'true' time sequence to merge to (in case of missing time stamps)
+    true_start<-as.Date(time_start,tz = "UTC")
+    true_end<-as.Date(time_end,tz = "UTC")
+    true_time.df<-data.frame(startDateTime=seq(from=lubridate::as_datetime(true_start,tz="UTC"),
+                                 to=lubridate::as_datetime(true_end),by=time_agr*60))
+    true_time.df$endDateTime<-seq(from=true_time.df$startDateTime[2],
+                                               to=lubridate::as_datetime(true_time.df$startDateTime[nrow(true_time.df)])+time_agr*60,
+                                  by=time_agr*60)
+    #remove last row (overlaps into next day):
+    true_seq<-true_time.df[1:(nrow(true_time.df)-1),]
+
+    #add true_time to data_all:
+    data_all[[length(data_all)+1]]<-true_seq
+
     # data_merge <- tibble::as_tibble(
     #     data.table::setDF(data.table::rbindlist(data_all, fill=TRUE, use.names=TRUE))
     # )
+    # #Josh code:
+    # data_merge <- tibble::as_tibble(
+    #   data.table::setDF(merge(data_all, all=T,by=c("startDateTime","endDateTime")))
+    # )
+
+
 
     # name first level of list:
     # names(data_all)<-year_month
@@ -154,8 +176,10 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     #                       paste0(names(interim[[i]][3:length(interim[[i]])]),
     #                              substr(unique(files_time_agr),34,41)[i]))
     # }
+
+    browser()
     #merge NEON data then convert startDateTime and endDateTime to POSIX format:
-    data_merge<-Reduce(function(x, y) merge(x, y, by=c("startDateTime",
+    data_merge<-Reduce(function(x, y) merge(x, y, all=T, by=c("startDateTime",
                                                        "endDateTime")),data_all)
     #final filter by date:
 
@@ -163,6 +187,9 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
                               as.Date(substr(data_merge$startDateTime,0,10))))
     date_filt_end<-max(grep(time_end,
                             as.Date(substr(data_merge$startDateTime,0,10))))
+
+
+
     data_filtered<-data_merge[date_filt_start:date_filt_end,]
     #remove columns with all NAs:
     data_final<-data_filtered[, !apply(is.na(data_filtered), 2, all)]
