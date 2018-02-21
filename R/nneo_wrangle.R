@@ -184,7 +184,7 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
                             as.Date(substr(data_merge$startDateTime,0,10))))
     data_filtered<-data_merge[date_filt_start:date_filt_end,]
     #remove columns with all NAs:
-    data_final<-data_filtered[, !apply(is.na(data_filtered), 2, all)]
+    data_final<-tibble::as_tibble(data_filtered[, !apply(is.na(data_filtered), 2, all)])
     #convert to Tibble format and output:
     return(data_final)
 }
