@@ -93,8 +93,10 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     #if empty:
     if(length(product_code)==0){
       stop(paste0("data product(s) not available for: ", site_code))}
+    #create year_month sequence to grab files:
+    time_seq<-seq(from=as.Date(time_start),to=as.Date(time_end),"days")
     #create year_month variable for nneo_data and nneo_file:
-    year_month<-c(substr(time_start,0,7),substr(time_end,0,7))
+    year_month<-unique(substr(time_seq,0,7))
     #check if it's same month - won't need to gather multiple monthly files:
     if(length(unique(year_month))==1){year_month<-unique(year_month)}
     #use nneo_data to get available file(s) via user input:
@@ -120,16 +122,21 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     #             site_code = site_code, year_month = y, filename = x)
     #     })
     # })
-    data_all <- lapply(files_time_agr, nGET2, ...)
+
+
+
+    data_all <- lapply(files_time_agr, nneo:::nGET2, ...)
     data_all <- lapply(data_all, function(z) {
         data.table::fread(z, stringsAsFactors = FALSE, data.table = FALSE)
     })
 
     #keep all spatial levels (bug fix)
     spatial_search<-"\\.\\d{3}\\.\\d{3}\\.\\d{3}"
-    #grep(spatial_terms,files_time_agr[1])
     spatial_terms<-sub("\\.\\d{3}\\.","",stringr::str_extract(files_time_agr,spatial_search))
-    #assign spatial terms to names:
+    #need DP names for lists:
+    dpName_search<-"\\d{5}\\."
+    dp_terms<-stringr::str_extract(files_time_agr,dpName_search)
+    #assign spatial terms to names (for now)
     names(data_all)<-spatial_terms
     #append spatial terms to col names:
     for(i in 1:length(data_all)){
@@ -138,6 +145,9 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
             #set row.names to NULL:
             row.names(data_all[[i]])<-NULL
     }
+    #rename lists using dpName_terms:
+    names(data_all)<-paste0(dp_terms,spatial_terms)
+    #browser()
 
     # #create 'true' time sequence to merge to (in case of missing time stamps)
     # true_start<-as.Date(time_start,tz = "UTC")
@@ -162,10 +172,23 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     # )
 
 
-
+    #browser()
     # name first level of list:
     # names(data_all)<-year_month
-    #rbind dataframes of similar data:
+    # #rbind dataframes of similar data:
+
+    #get duplicate names for rbinding:
+    unique(names(data_all))
+    interim<-list()
+    for(i in 1:length(unique(names(data_all)))){
+      dupIndex<-grep(unique(names(data_all))[i],names(data_all))
+            interim[[i]]<-data.frame(do.call(rbind,data_all[dupIndex]),row.names = NULL)
+              #do.call("rbind",lapply(data_all, "[", dupIndex))
+    }
+    #browser()
+
+
+    # which(duplicated(names(data_all))|duplicated(names(data_all), fromLast=TRUE),arr.ind = T)
     # data_length<-unique(unlist(lapply(data_all, function(x) length(x))))
     # interim<-list()
     # for(i in 1:data_length){
@@ -174,9 +197,9 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
     #                       paste0(names(interim[[i]][3:length(interim[[i]])]),
     #                              substr(unique(files_time_agr),34,41)[i]))
     # }
-
+    #  browser()
     #merge NEON data then convert startDateTime and endDateTime to POSIX format:
-    data_merge<-Reduce(function(x, y) merge(x, y, all=T, by=c("startDateTime","endDateTime")),data_all)
+    data_merge<-Reduce(function(x, y) merge(x, y, all.x=T, by=c("startDateTime","endDateTime")),interim)
     #final filter by date:
     date_filt_start<-min(grep(time_start,
                               as.Date(substr(data_merge$startDateTime,0,10))))
@@ -184,7 +207,8 @@ nneo_wrangle<-function(site_code="CPER",time_start="2017-06-20",time_end=NULL,
                             as.Date(substr(data_merge$startDateTime,0,10))))
     data_filtered<-data_merge[date_filt_start:date_filt_end,]
     #remove columns with all NAs:
-    data_final<-tibble::as_tibble(data_filtered[, !apply(is.na(data_filtered), 2, all)])
+    data_final<-tibble::as_tibble(data.table::setDF(data_filtered[, !apply(is.na(data_filtered), 2, all)]))
+    #browser()
     #convert to Tibble format and output:
     return(data_final)
 }
