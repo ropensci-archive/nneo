@@ -55,7 +55,7 @@ a custom time period, merged per measurement level and/or variable
 #download 30-minute, radiation data from NEON's Bartlett site for Summer 2016
 nneo_wrangle(site_code="BART", time_start="2016-06-20",
   time_end="2016-09-21", data_var="radiation")
-#download 1-minute, temperature data from NEON's Sterling (STER) site for 2017-03-04
+#download 30-minute, temperature data from NEON's Sterling (STER) site for 2017-03-04
 nneo_wrangle(site_code="STER",time_start="2017-03-04",
   data_var="temperature",time_agr=30)
 }
