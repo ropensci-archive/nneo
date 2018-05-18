@@ -1,20 +1,23 @@
 {
-  "@context": ["http://purl.org/codemeta/2.0", "http://schema.org"],
+  "@context": [
+    "http://purl.org/codemeta/2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
   "identifier": "nneo",
   "description": "'NEON' 'API' (<http://data.neonscience.org/data-api>) client.\n    Includes methods for interacting with all 'API' routes.",
   "name": "nneo: 'NEON' 'API' Client",
-  "codeRepository": "https://github.com/ropenscilabs/nneo",
-  "issueTracker": "https://github.com/ropenscilabs/nneo/issues",
+  "codeRepository": "https://github.com/ropensci/nneo",
+  "issueTracker": "https://github.com/ropensci/nneo/issues",
   "license": "https://spdx.org/licenses/MIT",
   "version": "0.1.1.9310",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.4.3",
+    "version": "3.5.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.4.3 Patched (2018-01-01 r74017)",
+  "runtimePlatform": "R version 3.5.0 (2018-04-23)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -36,24 +39,27 @@
       "familyName": "Roberti"
     }
   ],
-  "maintainer": {
-    "@type": "Person",
-    "givenName": "Scott",
-    "familyName": "Chamberlain",
-    "email": "myrmecocystus+r@gmail.com"
-  },
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Scott",
+      "familyName": "Chamberlain",
+      "email": "myrmecocystus+r@gmail.com"
+    }
+  ],
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
       "identifier": "roxygen2",
       "name": "roxygen2",
-      "version": "6.0.1",
+      "version": ">= 6.0.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=roxygen2"
     },
     {
       "@type": "SoftwareApplication",
@@ -62,9 +68,10 @@
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
     }
   ],
   "softwareRequirements": [
@@ -72,37 +79,40 @@
       "@type": "SoftwareApplication",
       "identifier": "crul",
       "name": "crul",
-      "version": "0.1.0",
+      "version": ">= 0.1.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=crul"
     },
     {
       "@type": "SoftwareApplication",
       "identifier": "jsonlite",
       "name": "jsonlite",
-      "version": "1.1",
+      "version": ">= 1.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=jsonlite"
     },
     {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
-      "version": "1.2",
+      "version": ">= 1.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
     {
       "@type": "SoftwareApplication",
@@ -111,9 +121,10 @@
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=data.table"
     },
     {
       "@type": "SoftwareApplication",
@@ -122,14 +133,28 @@
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
-        "name": "Central R Archive Network (CRAN)",
+        "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
-      }
+      },
+      "sameAs": "https://CRAN.R-project.org/package=fauxpas"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stringr",
+      "name": "stringr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringr"
     }
   ],
   "contIntegration": "https://travis-ci.org/ropenscilabs/nneo",
   "developmentStatus": "wip",
-  "releaseNotes": "https://github.com/ropenscilabs/nneo/blob/master/NEWS.md",
-  "readme": "https://github.com/ropenscilabs/nneo/blob/master/README.md",
-  "fileSize": "9.268KB"
+  "releaseNotes": "https://github.com/ropensci/nneo/blob/master/NEWS.md",
+  "readme": "https://github.com/ropensci/nneo/blob/master/README.md",
+  "fileSize": "9.425KB",
+  "keywords": ["api-wrapper", "climate", "ecology", "rstats"]
 }

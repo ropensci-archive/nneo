@@ -3,9 +3,9 @@ nneo
 
 
 
-[![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
-[![Build Status](https://travis-ci.org/ropenscilabs/nneo.svg?branch=master)](https://travis-ci.org/ropenscilabs/nneo)
-[![codecov.io](https://codecov.io/github/ropenscilabs/nneo/coverage.svg?branch=master)](https://codecov.io/github/ropenscilabs/nneo?branch=master)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Build Status](https://travis-ci.org/ropensci/nneo.svg?branch=master)](https://travis-ci.org/ropensci/nneo)
+[![codecov.io](https://codecov.io/github/ropensci/nneo/coverage.svg?branch=master)](https://codecov.io/github/ropensci/nneo?branch=master)
 [![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/nneo)](https://github.com/metacran/cranlogs.app)
 [![cran version](https://www.r-pkg.org/badges/version/nneo)](https://cran.r-project.org/package=nneo)
 
@@ -34,7 +34,7 @@ Development version
 
 
 ```r
-devtools::install_github("ropenscilabs/nneo")
+devtools::install_github("ropensci/nneo")
 ```
 
 
@@ -143,7 +143,7 @@ nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",
 
 ## Meta
 
-* Please [report any issues or bugs](https://github.com/ropenscilabs/nneo/issues).
+* Please [report any issues or bugs](https://github.com/ropensci/nneo/issues).
 * License: MIT
 * Get citation information for `nneo` in R doing `citation(package = nneo')`
 * Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).

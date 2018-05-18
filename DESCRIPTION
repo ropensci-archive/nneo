@@ -10,8 +10,8 @@ Authors@R: c(
     person("Josh", "Roberti", role = "ctb")
     )
 License: MIT + file LICENSE
-URL: https://github.com/ropenscilabs/nneo
-BugReports: https://github.com/ropenscilabs/nneo/issues
+URL: https://github.com/ropensci/nneo
+BugReports: https://github.com/ropensci/nneo/issues
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports:
