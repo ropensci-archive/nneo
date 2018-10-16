@@ -3,7 +3,7 @@ Type: Package
 Title: 'NEON' 'API' Client
 Description: 'NEON' 'API' (<http://data.neonscience.org/data-api>) client.
     Includes methods for interacting with all 'API' routes.
-Version: 0.1.1.9310
+Version: 0.1.1.9313
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"),
       email = "myrmecocystus+r@gmail.com"),
@@ -24,4 +24,4 @@ Imports:
 Suggests:
     roxygen2 (>= 6.0.1),
     testthat
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

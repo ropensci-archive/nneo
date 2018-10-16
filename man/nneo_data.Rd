@@ -52,7 +52,7 @@ nneo_data(product_code = "DP1.00098.001", site_code = "HEAL",
   year_month = "2016-05", package = "expanded")
 
 ## with a file name
-fname <- "NEON.D19.HEAL.DP1.00098.001.00000.000.040.001.RH_1min.csv"
+fname <- "NEON.D19.HEAL.DP1.00098.001.003.000.030.RH_30min.2016-05.expanded.20171026T085604Z.csv"
 nneo_file(product_code = "DP1.00098.001", site_code = "HEAL",
   year_month = "2016-05", filename = fname)
 

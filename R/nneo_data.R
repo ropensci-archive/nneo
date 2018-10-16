@@ -30,7 +30,7 @@
 #'   year_month = "2016-05", package = "expanded")
 #'
 #' ## with a file name
-#' fname <- "NEON.D19.HEAL.DP1.00098.001.00000.000.040.001.RH_1min.csv"
+#' fname <- "NEON.D19.HEAL.DP1.00098.001.003.000.030.RH_30min.2016-05.expanded.20171026T085604Z.csv"
 #' nneo_file(product_code = "DP1.00098.001", site_code = "HEAL",
 #'   year_month = "2016-05", filename = fname)
 #'
@@ -53,11 +53,20 @@ nneo_data <- function(product_code, site_code, year_month, package = NULL, ...){
 #' @export
 #' @rdname nneo_data
 nneo_file <- function(product_code, site_code, year_month, filename, ...) {
-  res <- nGET(
-    file.path(neon_base(), "data", product_code, site_code,
-              year_month, filename),
-    ...
-  )
+  # res <- nGET(
+  #   file.path(neon_base(), "data", product_code, site_code,
+  #             year_month, filename),
+  #   ...
+  # )
+  tmp <- nneo_data(product_code, site_code, year_month)
+  if (!filename %in% tmp$data$files$name) {
+    stop("file not found, check your filename or other parameters")
+  }
+  url <- tmp$data$files[tmp$data$files$name %in% filename, "url"][[1]]
+  if (!length(url) || !nzchar(url)) stop("no url found for filename")
+  if (length(url) > 1) stop("more than 1 url found, try again")
+  res <- nGET(url, ...)
+  if (!nzchar(res)) stop("file downloaded, but empty")
   tibble::as_data_frame(
     data.table::fread(input = res, stringsAsFactors = FALSE, data.table = FALSE)
   )
